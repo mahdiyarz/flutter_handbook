@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 void main() async {
-  //* initalize hive
+  //? initalize hive
   var path = Directory.current.path;
   await Hive
     ..init(path);
 
-  //* open the box
+  //? open the box
   var box = await Hive.openBox('myBox');
 
   runApp(const MyApp());
