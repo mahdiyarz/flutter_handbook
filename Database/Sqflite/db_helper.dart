@@ -1,5 +1,6 @@
 import 'package:path/path.dart' as pathPackage;
 import 'package:sqflite/sqflite.dart' as sqflite;
+import './note_model.dart';
 
 class DBHelper {
   //* Init database here
@@ -30,5 +31,33 @@ class DBHelper {
     const intTypeNull = 'INTEGER';
     const boolType = 'BOOLEAN NOT NULL';
     const boolTypeNull = 'BOOLEAN';
+
+    db.execute('''
+      CREATE TABLE $tableNotes(
+        ${NoteFields.id} $idType,
+        ${NoteFields.isImportant} $boolType,
+        ${NoteFields.number} $intType,
+        ${NoteFields.title} $textType,
+        ${NoteFields.description} $textType,
+        ${NoteFields.createdTime} $textType
+      )
+    ''');
+
+    db.execute('''
+      //! Create your second table as you know
+    ''');
+  }
+
+  Future<NoteModel> create(NoteModel noteModel) async {
+    final db = await instance.database;
+
+    final id = await db.insert(tableNotes, noteModel.toJson());
+    return noteModel.copy(id: id);
+  }
+
+  Future close() async {
+    final db = await instance.database;
+
+    db.close();
   }
 }
