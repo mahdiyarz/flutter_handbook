@@ -1,2 +1,2 @@
 # flutter_handbook
-Simple Flutter tuterial
+Simple Flutter training
