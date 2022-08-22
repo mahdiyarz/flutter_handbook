@@ -1,6 +1,15 @@
 final String tableNotes = 'notes';
 
 class NoteFields {
+  static final List<String> values = [
+    id,
+    isImportant,
+    number,
+    title,
+    description,
+    createdTime,
+  ];
+
   static final String id = '_id';
   static final String isImportant = 'isImportant';
   static final String number = 'number';
@@ -41,6 +50,15 @@ class NoteModel {
         title: title ?? this.title,
         description: description ?? this.description,
         createdTime: createdTime ?? this.createdTime,
+      );
+
+  static NoteModel fromJson(Map<String, Object?> myJson) => NoteModel(
+        id: myJson[NoteFields.id] as int?,
+        isImportant: myJson[NoteFields.isImportant] == 1 ? true : false,
+        number: myJson[NoteFields.number] as int,
+        title: myJson[NoteFields.title] as String,
+        description: myJson[NoteFields.description] as String,
+        createdTime: DateTime.parse(myJson[NoteFields.createdTime] as String),
       );
 
   Map<String, Object?> toJson() => {

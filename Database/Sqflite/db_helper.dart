@@ -53,6 +53,46 @@ class DBHelper {
 
     final id = await db.insert(tableNotes, noteModel.toJson());
     return noteModel.copy(id: id);
+
+    //* or you can have this syntax
+    // ignore: dead_code
+    final json = noteModel.toJson();
+    final columns =
+        '${NoteFields.title}, ${NoteFields.description}, ${NoteFields.createdTime}';
+    final values =
+        '${json[NoteFields.title]}, ${json[NoteFields.description]}, ${json[NoteFields.createdTime]}}';
+    final idNo2 = await db
+        .rawInsert('INSERT INTO $tableNotes ($columns) VALUES ($values)');
+  }
+
+  Future<NoteModel> readNote(int id) async {
+    final db = await instance.database;
+
+    final myNote = await db.query(
+      tableNotes,
+      columns: NoteFields.values,
+      where: '${NoteFields.id} = ?',
+      whereArgs: [id],
+    );
+
+    if (myNote.isNotEmpty) {
+      return NoteModel.fromJson(myNote.first);
+    } else {
+      throw Exception('ID $id not found');
+    }
+  }
+
+  Future<List<NoteModel>> readAllNotes() async {
+    final db = await instance.database;
+
+    final orderBy = '${NoteFields.createdTime} ASC';
+    final allData = await db.query(tableNotes, orderBy: orderBy);
+    return allData.map((e) => NoteModel.fromJson(e)).toList();
+
+    //* or you can have this syntax
+    // ignore: dead_code
+    final allData2 =
+        await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
   }
 
   Future close() async {
