@@ -95,6 +95,27 @@ class DBHelper {
         await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
   }
 
+  Future<int> update(NoteModel noteModel) async {
+    final db = await instance.database;
+
+    return db.update(
+      tableNotes,
+      noteModel.toJson(),
+      where: '${NoteFields.id} = ?',
+      whereArgs: [noteModel.id],
+    );
+  }
+
+  Future<int> delete(int id) async {
+    final db = await instance.database;
+
+    return db.delete(
+      tableNotes,
+      where: '${NoteFields.id} = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future close() async {
     final db = await instance.database;
 
