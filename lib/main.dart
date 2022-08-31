@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './Database/Sqflite/home.dart';
+import 'Database/Sqflite/note_app_home.dart';
 
 void main() {
-  runApp(const NoteAppWithSqf());
+  runApp(const MaterialApp(home: NoteApp()));
 }
